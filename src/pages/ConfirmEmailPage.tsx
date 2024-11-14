@@ -1,5 +1,5 @@
 import { ErrorResponse } from '@/@types/ErrorResponse';
-import Header from '@/components/header/header.component';
+import Header from '@/features/header/header.component';
 import ConfirmEmailCard from '@/features/auth/confirm-email/confirm-email-card.component';
 import { useToast } from '@/hooks/use-toast';
 import axios, { AxiosError } from 'axios';
@@ -71,6 +71,7 @@ export default function ConfirmEmailPage() {
     return (
         <>
             <Header />
+            <div className='flex mt-5 justify-center'>
             <ConfirmEmailCard
                 loadingResend={loadingResend}
                 resent={resent}
@@ -79,6 +80,7 @@ export default function ConfirmEmailPage() {
                 success={success}
                 errorMessage={error}
             />
+            </div>
         </>
     );
 }

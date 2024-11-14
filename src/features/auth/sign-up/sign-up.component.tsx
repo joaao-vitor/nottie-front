@@ -10,7 +10,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import VerifyEmailNotice from './verify-email-notice';
 import { SignType } from '@/contexts/AuthUIProvider';
-
+import api from '@/services/api';
+import { SuccessResponse } from '@/@types/SuccessResponse';
+import errorConverter from '@/utils/errorConverter';
 
 export default function SignUp() {
     const { toast } = useToast();
@@ -19,10 +21,7 @@ export default function SignUp() {
     const handleRegister = async (user: UserRegister) => {
         try {
             setLoading(true);
-            await axios.post(
-                `${import.meta.env.VITE_API_URL}/auth/register`,
-                user
-            );
+            await api.post<SuccessResponse<null>>(`/auth/register`, user);
 
             toast({
                 title: 'Success!',
@@ -32,10 +31,10 @@ export default function SignUp() {
 
             setRegistered(true);
         } catch (error) {
-            console.error(error);
+            const err = errorConverter(error);
             toast({
                 title: 'Error!',
-                description: 'Something went wrong',
+                description: err.message,
                 variant: 'destructive',
             });
         } finally {
@@ -56,10 +55,7 @@ export default function SignUp() {
             </DialogHeader>
             <div>
                 {!registered ? (
-                    <SignUpForm
-                        register={handleRegister}
-                        loading={loading}
-                    />
+                    <SignUpForm register={handleRegister} loading={loading} />
                 ) : (
                     <VerifyEmailNotice />
                 )}

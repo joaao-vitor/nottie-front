@@ -1,21 +1,17 @@
-// Header.tsx
-import { useAuthUI } from '@/contexts/AuthUIProvider';
-import { SignType } from '@/contexts/AuthUIProvider';
-import { Button } from '../ui/button';
-import Sign from '@/features/auth/sign.component';
-import { ModeToggle } from '../mode-toggler';
+import { ModeToggle } from '@/components/mode-toggler';
+import { Button } from '@/components/ui/button';
+import Sign from '../auth/sign.component';
+import { SignType, useAuthUI } from '@/contexts/AuthUIProvider';
 
-export default function HeaderContent() {
+export const NotLoggedHeader = () => {
     const { setSignType, setIsModalShown } = useAuthUI();
 
     const openSign = (type: SignType) => {
         setSignType(type);
         setIsModalShown(true);
     };
-
     return (
-        <header className="p-6 flex justify-between">
-            <h1 className="text-xl font-semibold">Nottie</h1>
+        <>
             <div className="flex gap-2">
                 <Button
                     variant={'ghost'}
@@ -29,6 +25,6 @@ export default function HeaderContent() {
                 <ModeToggle />
             </div>
             <Sign />
-        </header>
+        </>
     );
-}
+};

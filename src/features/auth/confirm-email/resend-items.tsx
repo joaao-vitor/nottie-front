@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, BadgeCheck, LoaderCircle } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
 
 export function LoadingResendTitle() {
     return (
@@ -28,10 +29,12 @@ export function ResendCardContent() {
         <div className="flex flex-col gap-4">
             We sent you a new confirmation email, check your mailbox
             <div className="flex flex-col">
-                <Button className="flex items-center">
-                    <ArrowLeft size={10} />
-                    Go Home
-                </Button>
+                <NavLink to={'/'} className='flex flex-col'>
+                    <Button className="flex items-center">
+                        <ArrowLeft size={10} />
+                        Go Home
+                    </Button>
+                </NavLink>
             </div>
         </div>
     );

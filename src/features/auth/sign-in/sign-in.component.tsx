@@ -6,8 +6,8 @@ import {
 } from '@/components/ui/dialog';
 import SignInForm from './sign-in-form';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/contexts/AuthProvider';
 import { useAuthUI } from '@/contexts/AuthUIProvider';
+import { useAuth } from '@/hooks/use-auth';
 
 
 export default function SignIn() {

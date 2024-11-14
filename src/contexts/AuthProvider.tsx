@@ -1,12 +1,13 @@
 import React, {
     createContext,
     useState,
-    useContext,
     useEffect,
     ReactNode,
     useCallback,
 } from 'react';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
+import api from '@/services/api';
+import { SuccessResponse } from '@/@types/SuccessResponse';
 
 interface Token {
     email: string;
@@ -17,24 +18,28 @@ interface Token {
     refreshToken: string;
 }
 
-interface User {
+export interface User {
     id: number;
     email: string;
     firstName: string;
     lastName: string;
+    profileImg: string;
     workstations: [];
     personalWorkstation: [];
 }
 
-interface AuthContextType {
+export interface AuthContextType {
     user: User | null;
     token: Token | null;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => void;
+    refresh: () => void;
     loading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+    undefined
+);
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -64,11 +69,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         setLoading(true);
         try {
-            const response = await axios.get<User>(
-                `${import.meta.env.VITE_API_URL}/user/me`,
-                { headers: { Authorization: `Bearer ${token.accessToken}` } }
-            );
-            setUser(response.data);
+            const response = await api.get<SuccessResponse<User>>(`/user/me`);
+            setUser(response.data.data);
         } catch (error) {
             if ((error as AxiosError).response?.status === 401) {
                 await handleTokenRefresh();
@@ -86,11 +88,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         setLoading(true);
         try {
-            const { data } = await axios.post(
-                `${import.meta.env.VITE_API_URL}/auth/refresh-token`,
-                { refreshToken: token.refreshToken }
+            const { data } = await api.post<SuccessResponse<Token>>(
+                `/auth/refresh-token`,
+                {
+                    refreshToken: token.refreshToken,
+                }
             );
-            const newToken = parseToken(data as Token);
+            const newToken = parseToken(data.data);
             setToken(newToken);
             localStorage.setItem('token', JSON.stringify(newToken));
             await loadUserData();
@@ -114,11 +118,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         async (email: string, password: string) => {
             setLoading(true);
             try {
-                const { data } = await axios.post(
-                    `${import.meta.env.VITE_API_URL}/auth/login`,
-                    { email, password }
+                const { data } = await api.post<SuccessResponse<Token>>(
+                    `/auth/login`,
+                    {
+                        email,
+                        password,
+                    }
                 );
-                const newToken = parseToken(data as Token);
+                const newToken = parseToken(data.data);
                 setToken(newToken);
                 localStorage.setItem('token', JSON.stringify(newToken));
                 await loadUserData();
@@ -142,16 +149,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+        <AuthContext.Provider
+            value={{
+                user,
+                token,
+                login,
+                logout,
+                loading,
+                refresh: loadUserData,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );
-};
-
-export const useAuth = (): AuthContextType => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-    return context;
 };
