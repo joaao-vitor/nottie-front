@@ -4,7 +4,7 @@ import ConfirmEmailCard from '@/features/auth/confirm-email/confirm-email-card.c
 import { useToast } from '@/hooks/use-toast';
 import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 export default function ConfirmEmailPage() {
     const [searchParams, setSearchParams] = useSearchParams();

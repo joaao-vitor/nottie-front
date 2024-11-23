@@ -7,7 +7,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router';
 import {
     LayoutDashboardIcon,
     LogOutIcon,
@@ -46,10 +46,10 @@ export const UserDropdown = () => {
                             className="flex items-center gap-x-3"
                             asChild
                         >
-                            <NavLink to={``}>
+                            <Link to="../">
                                 <UserAvatar user={user} />
                                 {user.firstName} {user?.lastName}
-                            </NavLink>
+                            </Link>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>

@@ -1,19 +1,9 @@
 import './App.css';
 import { Toaster } from './components/ui/toaster';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import ConfirmEmailPage from './pages/ConfirmEmailPage';
+import { RouterProvider } from 'react-router/dom';
 
-const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <HomePage />,
-    },
-    {
-        path: '/confirm-email',
-        element: <ConfirmEmailPage />,
-    },
-]);
+import router from './router';
+
 function App() {
     return (
         <>

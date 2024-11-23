@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, BadgeCheck, LoaderCircle } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 export function LoadingResendTitle() {
     return (

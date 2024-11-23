@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { SignType, useAuthUI } from '@/contexts/AuthUIProvider';
 import { BadgeCheck, BadgeX, LoaderCircle } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 export function ConfirmEmailSuccessCardTitle() {
     return (
