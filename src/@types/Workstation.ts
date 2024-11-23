@@ -1,5 +1,10 @@
 export interface WorkstationMenuItem {
     id: number;
     name: string;
-    type: string;
+    type: WorkstationType;
+}
+
+export enum WorkstationType {
+    PERSONAL = 'PERSONAL',
+    GROUP = 'GROUP',
 }

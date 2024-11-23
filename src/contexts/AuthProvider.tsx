@@ -26,7 +26,6 @@ export interface User {
     lastName: string;
     profileImg: string;
     workstations: WorkstationMenuItem[];
-    personalWorkstations: WorkstationMenuItem[];
 }
 
 export interface AuthContextType {
