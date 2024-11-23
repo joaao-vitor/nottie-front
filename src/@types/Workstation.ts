@@ -1,8 +1,14 @@
+export interface Workstation {
+    id: number;
+    name: string;
+    type: WorkstationType;
+    noteGroups: [];
+}
+
 export interface WorkstationMenuItem {
     id: number;
     name: string;
     type: WorkstationType;
-    notesGroup: [];
 }
 
 export enum WorkstationType {

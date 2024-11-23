@@ -12,6 +12,7 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarMenuSkeleton,
     useSidebar,
 } from '@/components/ui/sidebar';
 import {
@@ -22,25 +23,37 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import CreateWorkstation from '../create-workstation/create-workstation.component';
+import { useDashboard } from '@/hooks/use-dashboard';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Separator } from '@/components/ui/separator';
 
-type WorkstationSwitcherProps = {
-    defaultWorkstation: WorkstationMenuItem;
-    workstations: WorkstationMenuItem[];
+type WorkstationSwitcherProps = {};
+
+const WorkstationSwitcherSkeleton = () => {
+    return (
+        <>
+            <Skeleton className="flex h-12 items-center p-2">
+                <Skeleton className="flex aspect-square size-8 w-fit items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground" />
+            </Skeleton>
+            <div>
+                <Separator />
+                {new Array(5).fill(null).map((_, index) => (
+                    <SidebarMenuSkeleton key={index} className="w-full" />
+                ))}
+            </div>
+        </>
+    );
 };
 
-export default function WorkstationSwitcher({
-    defaultWorkstation,
-    workstations,
-}: WorkstationSwitcherProps) {
-    console.log(defaultWorkstation, workstations);
+export default function WorkstationSwitcher({}: WorkstationSwitcherProps) {
+    const { workstations } = useDashboard();
+    const { selectedWorkstation, setSelectedWorkstation } = useDashboard();
     const { isMobile } = useSidebar();
-
-    const [activeWorkstation, setActiveWorkstation] =
-        useState<WorkstationMenuItem>(defaultWorkstation);
 
     const [isCreateWorkstationOpen, setIsCreateWorkstationOpen] =
         useState(false);
 
+    if (!workstations) return <WorkstationSwitcherSkeleton />;
     return (
         <>
             <SidebarMenu>
@@ -52,7 +65,7 @@ export default function WorkstationSwitcher({
                                 className="data-[state=open]:bg-sidebar-accent  data-[state=open]:text-sidebar-accent-foreground"
                             >
                                 <div className="flex aspect-square size-8 w-fit items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                    {activeWorkstation.type ===
+                                    {selectedWorkstation?.type ===
                                     WorkstationType.PERSONAL ? (
                                         <CircleUserIcon
                                             className="shrink-0"
@@ -68,10 +81,10 @@ export default function WorkstationSwitcher({
                                 </div>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-semibold">
-                                        {activeWorkstation?.name}
+                                        {selectedWorkstation?.name}
                                     </span>
                                     <span className="truncate text-xs">
-                                        {activeWorkstation.type ===
+                                        {selectedWorkstation?.type ===
                                         WorkstationType.PERSONAL
                                             ? 'Personal Workstation'
                                             : 'Group Workstation'}
@@ -89,11 +102,11 @@ export default function WorkstationSwitcher({
                             <DropdownMenuLabel className="text-xs text-muted-foreground">
                                 Workstations
                             </DropdownMenuLabel>
-                            {workstations.map((workstation, index) => (
+                            {workstations?.map((workstation, index) => (
                                 <DropdownMenuItem
                                     key={workstation.name}
                                     onClick={() =>
-                                        setActiveWorkstation(workstation)
+                                        setSelectedWorkstation(workstation)
                                     }
                                     className="gap-2 p-2"
                                 >

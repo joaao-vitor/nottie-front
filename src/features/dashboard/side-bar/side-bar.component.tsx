@@ -5,7 +5,6 @@ import {
 } from '@/components/ui/sidebar';
 import WorkstationSwitcher from './workstation-switcher';
 import { useAuth } from '@/hooks/use-auth';
-import { WorkstationType } from '@/@types/Workstation';
 export default function SideBar() {
     const { user } = useAuth();
     console.log(user);
@@ -13,14 +12,7 @@ export default function SideBar() {
     return (
         <Sidebar variant={'inset'} collapsible={'icon'}>
             <SidebarHeader>
-                <WorkstationSwitcher
-                    workstations={user.workstations}
-                    defaultWorkstation={
-                        user.workstations.find(
-                            (v) => v.type === WorkstationType.PERSONAL
-                        ) || user.workstations[0]
-                    }
-                />
+                <WorkstationSwitcher />
             </SidebarHeader>
             <SidebarContent></SidebarContent>
         </Sidebar>
