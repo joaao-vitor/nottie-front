@@ -2,8 +2,9 @@ import ConfirmEmailPage from '@/pages/ConfirmEmailPage';
 import HomePage from '@/pages/HomePage';
 import { createBrowserRouter } from 'react-router';
 import ProtectedRoute from './protectedRoute';
-import HomeLoggedInPage from '@/pages/HomeLoggedInPage';
-import Layout from '@/features/layout/layout.component';
+import Layout from '@/features/layout/layout';
+import DashboardLayout from '@/features/layout/dashboard-layout';
+import HomeDashboardPage from '@/pages/dashboard/HomePage';
 
 export default createBrowserRouter(
     [
@@ -19,12 +20,19 @@ export default createBrowserRouter(
                     path: '/confirm-email',
                     children: [{ path: '*', element: <ConfirmEmailPage /> }],
                 },
+            ],
+        },
+        {
+            path: '/dashboard',
+            element: <ProtectedRoute />,
+            children: [
                 {
-                    element: <ProtectedRoute />,
+                    path: '',
+                    element: <DashboardLayout />,
                     children: [
                         {
-                            path: '/dashboard',
-                            element: <HomeLoggedInPage />,
+                            path: '',
+                            element: <HomeDashboardPage />,
                         },
                     ],
                 },

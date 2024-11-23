@@ -4,10 +4,7 @@ import HeaderContent from '@/features/header/header.component';
 
 const ProtectedRoute = () => {
     const { token } = useAuth();
-
-    return (
-            token?.accessToken ? <Outlet /> : <Navigate to="/" replace />
-    );
+    return token?.accessToken ? <Outlet /> : <Navigate to="/" replace />;
 };
 
 export default ProtectedRoute;

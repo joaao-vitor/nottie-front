@@ -9,11 +9,11 @@ import { AuthUIProvider } from './contexts/AuthUIProvider.tsx';
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <AuthUIProvider>
-                <AuthProvider>
+            <AuthProvider>
+                <AuthUIProvider>
                     <App />
-                </AuthProvider>
-            </AuthUIProvider>
+                </AuthUIProvider>
+            </AuthProvider>
         </ThemeProvider>
     </StrictMode>
 );

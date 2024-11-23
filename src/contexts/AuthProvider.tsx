@@ -8,6 +8,7 @@ import React, {
 import { AxiosError } from 'axios';
 import api from '@/services/api';
 import { SuccessResponse } from '@/@types/SuccessResponse';
+import { WorkstationMenuItem } from '@/@types/Workstation';
 
 interface Token {
     email: string;
@@ -24,8 +25,8 @@ export interface User {
     firstName: string;
     lastName: string;
     profileImg: string;
-    workstations: [];
-    personalWorkstation: [];
+    workstations: WorkstationMenuItem[];
+    personalWorkstations: WorkstationMenuItem[];
 }
 
 export interface AuthContextType {

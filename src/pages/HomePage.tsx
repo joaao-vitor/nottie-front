@@ -11,12 +11,10 @@ function HomePage() {
         setSignType(SignType.SIGNUP);
         setIsModalShown(true);
     };
-    
-    if (user) {
-        return <Navigate to={'/dashboard'} />;
-    }
 
-    return (
+    return user ? (
+        <Navigate to={'/dashboard'} />
+    ) : (
         <>
             <main className="flex flex-col  justify-center items-center gap-12 p-6">
                 <div className="flex items-center justify-center flex-col mt-12 gap-1 max-w-[650px]  text-center">
