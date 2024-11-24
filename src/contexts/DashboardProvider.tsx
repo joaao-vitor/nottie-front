@@ -7,6 +7,7 @@ export interface DashboardContextType {
     workstations: Workstation[] | undefined;
     selectedWorkstation: Workstation | undefined;
     setSelectedWorkstation: (selected: Workstation) => void;
+    refresh: () => void;
 }
 interface DashboardContextProps {
     children: ReactNode;
@@ -22,6 +23,20 @@ export const DashboardProvider = ({ children }: DashboardContextProps) => {
     const [selectedWorkstation, setSelectedWorkstation] = useState<
         Workstation | undefined
     >(undefined);
+
+    const refresh = () => {
+        if (user) {
+            getWorkstationsByUser(user).then((response) => {
+                setWorkstations(response.data || []);
+                setSelectedWorkstation(
+                    response.data?.find(
+                        (workstation) =>
+                            workstation.id === selectedWorkstation?.id
+                    )
+                );
+            });
+        }
+    };
 
     useEffect(() => {
         if (user) {
@@ -45,6 +60,7 @@ export const DashboardProvider = ({ children }: DashboardContextProps) => {
                 selectedWorkstation,
                 setSelectedWorkstation,
                 workstations,
+                refresh,
             }}
         >
             {children}

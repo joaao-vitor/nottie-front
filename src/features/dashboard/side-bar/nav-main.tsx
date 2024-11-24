@@ -1,4 +1,4 @@
-import { ChevronRight, MoreHorizontal } from 'lucide-react';
+import { ChevronRight, MoreHorizontal, Plus, PlusIcon } from 'lucide-react';
 
 import {
     Collapsible,
@@ -7,11 +7,14 @@ import {
 } from '@/components/ui/collapsible';
 import {
     SidebarGroup,
+    SidebarGroupAction,
     SidebarGroupLabel,
     SidebarMenu,
+    SidebarMenuAction,
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarMenuSub,
+    SidebarMenuSubButton,
     SidebarMenuSubItem,
     useSidebar,
 } from '@/components/ui/sidebar';
@@ -50,16 +53,20 @@ const subMenuItems = (subMenuItems: NavSubItem[]) => {
     return subMenuItems.map((subItem) => (
         <DropdownMenu key={`dropdown-${subItem.name}`}>
             <SidebarMenuSubItem key={subItem.name}>
-                <NavLink to={`./${subItem.url}`}>
-                    <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+                <SidebarMenuButton
+                    variant={'noPadding'}
+                    asChild
+                    className="data-[state=open]:bg- sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                >
+                    <NavLink to={`./${subItem.url}`}>
                         {subItem.name}{' '}
                         {subItem.dropdownMenuItems?.length && (
                             <DropdownMenuTrigger asChild>
                                 <MoreHorizontal className="ml-auto" />
                             </DropdownMenuTrigger>
                         )}
-                    </SidebarMenuButton>
-                </NavLink>
+                    </NavLink>
+                </SidebarMenuButton>
             </SidebarMenuSubItem>
             {subItem.dropdownMenuItems?.length && (
                 <DropdownMenuContent
@@ -91,9 +98,19 @@ export function NavMain({ items, navLabel }: NavMainProps) {
                                 <SidebarMenuButton tooltip={item.name}>
                                     {item.icon && <item.icon />}
                                     <span>{item.name}</span>
+
                                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
+
+                            {item.showPlusIcon && item.plusIconOnClick && (
+                                <SidebarMenuAction
+                                    onClick={item.plusIconOnClick}
+                                >
+                                    <Plus />{' '}
+                                    <span className="sr-only">Add</span>
+                                </SidebarMenuAction>
+                            )}
                             <CollapsibleContent>
                                 <SidebarMenuSub>
                                     {subMenuItems(item.items || [])}

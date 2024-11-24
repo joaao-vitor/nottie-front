@@ -1,0 +1,104 @@
+import { Button } from '@/components/ui/button';
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useDashboard } from '@/hooks/use-dashboard';
+import { useToast } from '@/hooks/use-toast';
+import { createNotesGroup } from '@/services/NotesGroups/create-notesgroup';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+const formSchema = z.object({
+    name: z
+        .string()
+        .min(3, { message: 'Min. 3 characters' })
+        .max(30, { message: 'Max. 30 characters' }),
+});
+
+type CreateNotesGroupFormProps = {
+    setDialogOpen: (open: boolean) => void;
+};
+export const CreateNotesGroupForm = ({
+    setDialogOpen,
+}: CreateNotesGroupFormProps) => {
+    const { selectedWorkstation, refresh } = useDashboard();
+    const { toast } = useToast();
+    const [loading, setLoading] = useState(false);
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: '',
+        },
+    });
+    const onSubmit = () => {
+        setLoading(true);
+        selectedWorkstation &&
+            createNotesGroup(selectedWorkstation, form.getValues('name'))
+                .then((data) => {
+                    toast({
+                        title: 'Created!',
+                        description: data?.message,
+                        variant: 'success',
+                    });
+                    refresh();
+                    setDialogOpen(false);
+                })
+                .catch((error) => {
+                    toast({
+                        title: 'Error!',
+                        description: error.message,
+                        variant: 'destructive',
+                    });
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+    };
+    const handleCancel = () => {
+        form.reset();
+        setDialogOpen(false);
+    };
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="Notes group's Name"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <div className="flex justify-end gap-2">
+                    <Button
+                        onClick={handleCancel}
+                        type="button"
+                        variant={'secondary'}
+                        disabled={loading}
+                    >
+                        Cancel
+                    </Button>
+                    <Button type="submit" disabled={loading}>
+                        Create
+                    </Button>
+                </div>
+            </form>
+        </Form>
+    );
+};

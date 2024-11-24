@@ -3,6 +3,14 @@ export interface Workstation {
     name: string;
     type: WorkstationType;
     notesGroups: WorkstationNoteGroup[];
+    leaders: WorkstationLeader[];
+}
+
+export interface WorkstationLeader {
+    id: number;
+    firstName: string;
+    lastName: string;
+    profileImg: string;
 }
 
 export interface WorkstationNoteGroup {
