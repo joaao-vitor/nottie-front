@@ -8,7 +8,7 @@ import React, {
 import { AxiosError } from 'axios';
 import api from '@/services/api';
 import { SuccessResponse } from '@/@types/SuccessResponse';
-import { Workstation, WorkstationMenuItem } from '@/@types/Workstation';
+import { Workstation } from '@/@types/Workstation';
 
 interface Token {
     email: string;

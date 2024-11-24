@@ -25,16 +25,17 @@ export const DashboardProvider = ({ children }: DashboardContextProps) => {
 
     useEffect(() => {
         if (user) {
-            getWorkstationsByUser(user).then((response) =>
-                setWorkstations(response.data || [])
-            );
-        }
-        if (user && !selectedWorkstation) {
-            setSelectedWorkstation(
-                user.workstations.find(
-                    (w) => w.type === WorkstationType.PERSONAL
-                ) || user.workstations[0]
-            );
+            getWorkstationsByUser(user).then((response) => {
+                setWorkstations(response.data || []);
+                if (!selectedWorkstation && response.data) {
+                    setSelectedWorkstation(
+                        response.data?.find(
+                            (workstation) =>
+                                workstation.type === WorkstationType.PERSONAL
+                        ) || response.data[0]
+                    );
+                }
+            });
         }
     }, [user, getWorkstationsByUser]);
 

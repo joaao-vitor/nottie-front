@@ -2,7 +2,12 @@ export interface Workstation {
     id: number;
     name: string;
     type: WorkstationType;
-    noteGroups: [];
+    notesGroups: WorkstationNoteGroup[];
+}
+
+export interface WorkstationNoteGroup {
+    id: number;
+    name: string;
 }
 
 export interface WorkstationMenuItem {

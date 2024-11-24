@@ -5,6 +5,8 @@ import {
 } from '@/components/ui/sidebar';
 import WorkstationSwitcher from './workstation-switcher';
 import { useAuth } from '@/hooks/use-auth';
+import { FeaturesNav } from './features-nav';
+
 export default function SideBar() {
     const { user } = useAuth();
     console.log(user);
@@ -14,7 +16,9 @@ export default function SideBar() {
             <SidebarHeader>
                 <WorkstationSwitcher />
             </SidebarHeader>
-            <SidebarContent></SidebarContent>
+            <SidebarContent>
+                <FeaturesNav />
+            </SidebarContent>
         </Sidebar>
     );
 }
