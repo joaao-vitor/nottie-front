@@ -5,6 +5,7 @@ import ProtectedRoute from './protectedRoute';
 import Layout from '@/features/layout/layout';
 import DashboardLayout from '@/features/layout/dashboard-layout';
 import HomeDashboardPage from '@/pages/dashboard/HomePage';
+import NotesGroupPage from '@/pages/dashboard/NotesGroupPage';
 
 export default createBrowserRouter(
     [
@@ -33,6 +34,11 @@ export default createBrowserRouter(
                         {
                             path: '',
                             element: <HomeDashboardPage />,
+                        },
+
+                        {
+                            path: 'notesgroup/:id',
+                            element: <NotesGroupPage />,
                         },
                     ],
                 },

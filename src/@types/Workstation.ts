@@ -1,16 +1,11 @@
+import { CompactUser } from './Compacts/CompactUser';
+
 export interface Workstation {
     id: number;
     name: string;
     type: WorkstationType;
     notesGroups: WorkstationNoteGroup[];
-    leaders: WorkstationLeader[];
-}
-
-export interface WorkstationLeader {
-    id: number;
-    firstName: string;
-    lastName: string;
-    profileImg: string;
+    leaders: CompactUser[];
 }
 
 export interface WorkstationNoteGroup {

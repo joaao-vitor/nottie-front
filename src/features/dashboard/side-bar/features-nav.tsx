@@ -46,7 +46,7 @@ export function FeaturesNav() {
         (noteGroup) => ({
             noteGroupId: noteGroup.id,
             name: noteGroup.name,
-            url: `notegroup/${noteGroup.id}`,
+            url: `notesgroup/${noteGroup.id}`,
         })
     );
 
