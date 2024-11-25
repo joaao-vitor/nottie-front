@@ -7,32 +7,37 @@ import {
 } from '@/components/ui/dialog';
 import { PencilIcon } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-import { CreateNotesGroupForm } from './create-notesgroup-form';
+import { EditNotesGroupForm } from './edit-notesgroup-form';
+import { WorkstationNoteGroup } from '@/@types/Workstation';
 
-type CreateNotesGroupProps = {
+type EditNotesGroupProps = {
     isOpen: boolean;
     setIsOpen: (open: boolean) => void;
+    selectedNotesGroup: WorkstationNoteGroup;
 };
 
-export const CreateNotesGroup = ({
+export const EditNotesGroup = ({
     isOpen,
     setIsOpen,
-}: CreateNotesGroupProps) => {
+    selectedNotesGroup,
+}: EditNotesGroupProps) => {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle className="flex gap-4 items-center">
                         <PencilIcon size={25} strokeWidth={1.2} />
-                        Creating a notes group
+                        Editing a notes group
                     </DialogTitle>
                     <DialogDescription>
-                        Let's create a new notes group, fill the form below and
-                        click submit.
+                        Insert a new name to your notes group below and then click submit!
                     </DialogDescription>
                 </DialogHeader>
                 <Separator />
-                <CreateNotesGroupForm setDialogOpen={setIsOpen} />
+                <EditNotesGroupForm
+                    notesGroup={selectedNotesGroup}
+                    setDialogOpen={setIsOpen}
+                />
             </DialogContent>
         </Dialog>
     );

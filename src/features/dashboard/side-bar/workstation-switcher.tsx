@@ -1,4 +1,4 @@
-import { WorkstationMenuItem, WorkstationType } from '@/@types/Workstation';
+import { WorkstationType } from '@/@types/Workstation';
 import {
     DropdownMenu,
     DropdownMenuItem,

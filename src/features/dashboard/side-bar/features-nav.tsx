@@ -8,11 +8,16 @@ import { CreateNotesGroup } from '../create-notesgroup/create-notesgroup.compone
 import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { isLeader } from '@/utils/isLeader';
+import { WorkstationNoteGroup } from '@/@types/Workstation';
+import { EditNotesGroup } from '../edit-notesgroup/edit-notesgroup.component';
 
 export function FeaturesNav() {
     const { selectedWorkstation, refresh } = useDashboard();
     const { user } = useAuth();
     const [newNoteGroupDialog, setNewNoteGroupDialog] = useState(false);
+    const [editNoteGroupDialog, setEditGroupDialog] = useState(false);
+    const [noteGroupSelected, setNoteGroupSelected] =
+        useState<WorkstationNoteGroup | null>(null);
     const { toast } = useToast();
 
     const deleteNoteGroup = (notesGroupId: number) => {
@@ -62,12 +67,20 @@ export function FeaturesNav() {
                     onClick: () => {
                         deleteNoteGroup(item.noteGroupId);
                     },
+                    isShown: !!user && isLeader(selectedWorkstation, user),
                 },
 
                 {
                     name: 'Edit',
                     icon: EditIcon,
-                    onClick: () => {},
+                    onClick: () => {
+                        setNoteGroupSelected({
+                            name: item.name,
+                            id: item.noteGroupId,
+                        });
+                        setEditGroupDialog(true);
+                    },
+                    isShown: !!user && isLeader(selectedWorkstation, user),
                 },
             ],
         })),
@@ -80,6 +93,13 @@ export function FeaturesNav() {
                     isOpen={newNoteGroupDialog}
                     setIsOpen={setNewNoteGroupDialog}
                 />
+                {noteGroupSelected && (
+                    <EditNotesGroup
+                        isOpen={editNoteGroupDialog}
+                        setIsOpen={setEditGroupDialog}
+                        selectedNotesGroup={noteGroupSelected}
+                    />
+                )}
             </>
         )
     );

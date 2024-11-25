@@ -4,6 +4,7 @@ export interface DropdownItem {
     name: string;
     icon?: LucideIcon;
     onClick: (event?: React.MouseEvent) => void;
+    isShown?: boolean;
 }
 
 export interface NavSubItem {
@@ -19,5 +20,5 @@ export interface NavItem {
     isActive?: boolean;
     items?: NavSubItem[];
     showPlusIcon?: boolean;
-    plusIconFn?: (event?: React.MouseEvent) => void;
+    plusIconOnClick?: (event?: React.MouseEvent) => void;
 }

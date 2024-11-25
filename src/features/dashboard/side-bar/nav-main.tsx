@@ -1,4 +1,4 @@
-import { ChevronRight, MoreHorizontal, Plus, PlusIcon } from 'lucide-react';
+import { ChevronRight, MoreHorizontal, Plus } from 'lucide-react';
 
 import {
     Collapsible,
@@ -7,14 +7,12 @@ import {
 } from '@/components/ui/collapsible';
 import {
     SidebarGroup,
-    SidebarGroupAction,
     SidebarGroupLabel,
     SidebarMenu,
     SidebarMenuAction,
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarMenuSub,
-    SidebarMenuSubButton,
     SidebarMenuSubItem,
     useSidebar,
 } from '@/components/ui/sidebar';
@@ -33,18 +31,21 @@ type NavMainProps = {
 };
 
 const dropdownItems = (dropdownItems: DropdownItem[]) => {
-    return dropdownItems.map((dropdownItem) => (
-        <DropdownMenuItem asChild key={dropdownItem.name}>
-            <SidebarMenuButton
-                tooltip={dropdownItem.name}
-                className="flex justify-between"
-                onClick={dropdownItem.onClick}
-            >
-                <span>{dropdownItem.name}</span>
-                {dropdownItem.icon && <dropdownItem.icon />}
-            </SidebarMenuButton>
-        </DropdownMenuItem>
-    ));
+    return dropdownItems.map(
+        (dropdownItem) =>
+            dropdownItem.isShown && (
+                <DropdownMenuItem asChild key={dropdownItem.name}>
+                    <SidebarMenuButton
+                        tooltip={dropdownItem.name}
+                        className="flex justify-between"
+                        onClick={dropdownItem.onClick}
+                    >
+                        <span>{dropdownItem.name}</span>
+                        {dropdownItem.icon && <dropdownItem.icon />}
+                    </SidebarMenuButton>
+                </DropdownMenuItem>
+            )
+    );
 };
 
 const subMenuItems = (subMenuItems: NavSubItem[]) => {
@@ -60,11 +61,14 @@ const subMenuItems = (subMenuItems: NavSubItem[]) => {
                 >
                     <NavLink to={`./${subItem.url}`}>
                         {subItem.name}{' '}
-                        {subItem.dropdownMenuItems?.length && (
-                            <DropdownMenuTrigger asChild>
-                                <MoreHorizontal className="ml-auto" />
-                            </DropdownMenuTrigger>
-                        )}
+                        {subItem.dropdownMenuItems &&
+                            subItem.dropdownMenuItems.filter(
+                                (dropdownItem) => dropdownItem.isShown
+                            ).length > 0 && (
+                                <DropdownMenuTrigger asChild>
+                                    <MoreHorizontal className="ml-auto" />
+                                </DropdownMenuTrigger>
+                            )}
                     </NavLink>
                 </SidebarMenuButton>
             </SidebarMenuSubItem>
